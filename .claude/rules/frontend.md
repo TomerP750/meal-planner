@@ -19,6 +19,9 @@ paths:
 
 ## Theme and styling
 
+- Treat `mealplanner-web/src/index.css` as the shared design palette. Light mode is the default; dark mode is activated only by `data-theme="dark"` on `<html>`. Future theme context should set this attribute. Do not add automatic system-theme switching without a product requirement.
+- Use semantic utilities such as `bg-background`, `bg-surface`, `text-foreground`, `text-muted-foreground`, `border-divider`, `bg-input`, `border-input-border`, and `outline-ring`. Pair `primary`, `accent`, `danger`, and `disabled` backgrounds with their matching `*-foreground` tokens. Use status tokens with their matching `*-surface` backgrounds for feedback.
+- Theme tokens switch automatically with the root attribute; reserve `dark:` for design differences beyond those tokens. Add matching light and dark values when extending the semantic palette. Primary button gradients should use `primary` and `primary-strong` with `primary-foreground` text.
 - Prefer the theme colors defined in `mealplanner-web/src/index.css`. If a needed theme color is missing, use the closest matching color and shade from Tailwind's built-in palette. Avoid hardcoded color values and use the selected fallback consistently.
 - Use a linear gradient made from theme colors for primary action buttons. Keep secondary and destructive actions visually distinct, and provide clear hover, focus, active, and disabled states.
 - Design every screen and component for responsive layouts and dark mode from the start. Use mobile-first styles, flexible layouts, and appropriate breakpoints; avoid fixed dimensions that cause overflow.
