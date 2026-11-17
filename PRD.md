@@ -49,12 +49,12 @@ Body measurements are not required to use manual targets.
 
 1. The user selects "Estimate my calories."
 2. Saved profile measurements pre-fill the form; missing fields are requested.
-3. The user reviews height, weight, age, activity level, and any other inputs required by the selected estimation method.
+3. The user reviews height, weight, age, activity level, and the sex-specific Mifflin–St Jeor equation option used for the estimate.
 4. The application shows estimated daily calories and explains the method and assumptions in plain language.
 5. It proposes daily macro targets using a documented default split. The user can edit both calories and macros before continuing.
 6. The user enters a weekly budget and generates, reviews, and saves a plan.
 
-The exact calorie formula, required inputs, activity factors, and default macro split must be selected and documented before implementing this flow. The product must not silently invent missing measurements or present an estimate as an exact requirement.
+Use Mifflin–St Jeor for resting energy expenditure as specified in FR-3. Activity factors and the default macro split must still be selected and documented before implementing the complete estimation flow. The product must not silently invent missing measurements or present an estimate as an exact requirement.
 
 ### C. Return with a saved profile
 
@@ -69,7 +69,7 @@ The exact calorie formula, required inputs, activity factors, and default macro 
 
 - Support account creation, sign-in, and sign-out.
 - Store the user's display name and optional body measurements: height in cm and weight in kg.
-- Store age and activity information when needed for estimation; collect additional formula-specific information only if required by the chosen method.
+- Store age, activity level, and the selected sex-specific equation option when the user explicitly saves these estimation inputs. These fields are optional for users who enter targets manually.
 - Allow profile fields to be viewed and edited, with units and validation shown beside inputs.
 - Persist profile changes across sessions and isolate each user's profile and plans.
 - Do not overwrite saved profile data merely because the user edits a planning form; saving profile updates must be explicit.
@@ -85,12 +85,33 @@ The exact calorie formula, required inputs, activity factors, and default macro 
 
 ### FR-3: Calorie estimation
 
-- Use one documented estimation method consistently on the server.
+- Use the simplified Mifflin–St Jeor equation consistently on the server to estimate resting energy expenditure (REE), in kcal/day.
 - Require every input needed by that method and validate supported ranges before calculation.
 - Show the calculated calorie estimate, suggested macro targets, and an explanation of the assumptions.
 - Allow the user to edit the proposed targets and pass the same validation as manually entered targets.
 - Pre-fill available profile measurements and identify missing fields clearly.
 - Include a short notice that the result is an estimate for general meal planning.
+
+#### FR-3a: Mifflin–St Jeor method
+
+Required inputs: weight in kilograms (`W`), height in centimeters (`H`), age in completed years (`A`), and an explicitly selected sex-specific equation option.
+
+```text
+Male equation:   REE = 10 × W + 6.25 × H − 5 × A + 5
+Female equation: REE = 10 × W + 6.25 × H − 5 × A − 161
+```
+
+The original study developed this equation using adults aged 19–78. For this project's estimation flow, support that age range; reject unsupported ages rather than extrapolating silently. Source: [Mifflin et al., 1990 — original study](https://pubmed.ncbi.nlm.nih.gov/2305711/).
+
+- Explain why the equation option is requested. Do not infer it from a name or gender identity, and do not invent an alternative coefficient. Users who do not wish to select an option can use manual targets.
+- Validate all inputs with Zod before calculation: finite positive height and weight, integer age within the supported range, and an allowed equation option. Document any additional supported measurement bounds before implementation.
+- REE describes resting expenditure. Do not use it directly as the full-day meal-plan target. Estimate maintenance calories separately as `REE × activity factor` using an explicitly chosen activity level and a documented, versioned factor table.
+- Activity factors are separate assumptions, not part of the Mifflin–St Jeor equation. Finalize their values and descriptions before implementing maintenance estimation; never assume a factor for a missing activity level.
+- Default to maintenance estimation. Do not automatically apply weight-loss deficits or weight-gain surpluses. The user reviews and confirms the final daily target before meal generation.
+- The equation does not calculate protein, carbohydrates, or fat. Keep macro suggestions separate and editable; the default macro split remains an open product decision.
+- Keep full precision through calculations and round only displayed results. Persist the formula version, inputs, REE, selected activity factor and its version, maintenance estimate, and confirmed target with an estimated plan.
+- Treat this as a general adult project estimate. Pregnancy, breastfeeding, and condition-specific nutrition calculations are outside the estimator's scope.
+- Reference calculation for verification: at 70 kg, 175 cm, and age 30, the male equation returns `1648.75 kcal/day` and the female equation returns `1482.75 kcal/day`, before any activity adjustment.
 
 ### FR-4: Weekly budget
 
@@ -186,7 +207,7 @@ Recipe totals must use a consistent quantity basis and avoid double-counting ing
 
 ## 12. Implementation sequence
 
-1. Confirm the estimation method, target tolerances, currency, price basis, and sample catalog coverage.
+1. Confirm the activity-factor table and default macro split for the selected Mifflin–St Jeor method, target tolerances, currency, price basis, and sample catalog coverage.
 2. Implement account access and persistent profiles.
 3. Implement manual target input, estimation, budget input, and validation.
 4. Implement catalog-based generation and constraint checks.

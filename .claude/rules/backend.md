@@ -33,6 +33,7 @@ paths:
 
 - Use parameterized queries or the existing database client's safe query API. Use transactions for related writes that must succeed or fail together.
 - Keep nutrition units, currency, and price bases consistent. Preserve calculation precision and round only for display; verify the unrounded cost against the budget.
+- Use the Mifflin–St Jeor specification in `PRD.md` (FR-3a) for calorie estimation. Keep the resting-energy calculation in a pure helper, separate activity adjustment from it, and never treat resting expenditure as the full-day target. Do not invent missing inputs, activity factors, or macro splits. Verify both equation options against the documented reference calculations when implementing the estimator.
 - Keep generation bounded and distinguish a failed search from proof that a plan is impossible. Never silently relax nutrition targets or increase the user's budget.
 - Save the input, nutrition, portion, and price snapshots needed to keep saved plans stable when profiles or catalog data change.
 - Read configuration through the project's configuration approach. Never hardcode secrets or commit credentials.
