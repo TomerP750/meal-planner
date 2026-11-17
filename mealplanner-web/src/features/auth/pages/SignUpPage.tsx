@@ -1,5 +1,16 @@
-import { CheckIcon, DumbbellIcon, FlameIcon, MailIcon, ScaleIcon, UserIcon } from "lucide-react";
+import {
+    ActivityIcon,
+    CheckIcon,
+    CircleUserRoundIcon,
+    DumbbellIcon,
+    FlameIcon,
+    MailIcon,
+    ScaleIcon,
+    TargetIcon,
+    UserIcon,
+} from "lucide-react";
 import type { LucideIcon } from "lucide-react";
+import type { ReactNode } from "react";
 import { useForm } from "react-hook-form";
 import type { SubmitHandler } from "react-hook-form";
 import { Input } from "../../../shared/ui/Input/Input";
@@ -66,7 +77,19 @@ const goalOptions: GoalOption[] = [
     },
 ];
 
-const sectionLegendClassName = "mb-4 text-xs font-semibold tracking-widest text-muted-foreground uppercase";
+type SectionLegendProps = {
+    icon: LucideIcon;
+    children: ReactNode;
+};
+
+function SectionLegend({ icon: Icon, children }: SectionLegendProps) {
+    return (
+        <legend className="mb-4 flex items-center gap-2 text-xs font-semibold tracking-widest text-primary uppercase">
+            <Icon aria-hidden="true" size={16} strokeWidth={2} className="shrink-0" />
+            {children}
+        </legend>
+    );
+}
 
 export default function SignUpPage() {
     const {
@@ -95,7 +118,7 @@ export default function SignUpPage() {
             <div className="rounded-2xl border border-divider bg-background/70 p-5 sm:p-8 lg:min-h-0 lg:overflow-y-auto">
                 <form noValidate onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-8">
                     <fieldset className="flex flex-col gap-5">
-                        <legend className={sectionLegendClassName}>Account</legend>
+                        <SectionLegend icon={CircleUserRoundIcon}>Account</SectionLegend>
 
                         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-4">
                             <Input
@@ -143,7 +166,7 @@ export default function SignUpPage() {
                     </fieldset>
 
                     <fieldset className="flex flex-col gap-5">
-                        <legend className={sectionLegendClassName}>Your body</legend>
+                        <SectionLegend icon={ActivityIcon}>Your body</SectionLegend>
 
                         <div className="grid grid-cols-3 gap-3">
                             <Input
@@ -178,13 +201,13 @@ export default function SignUpPage() {
                     </fieldset>
 
                     <fieldset className="flex flex-col">
-                        <legend className={sectionLegendClassName}>Your goal</legend>
+                        <SectionLegend icon={TargetIcon}>Your goal</SectionLegend>
 
                         <div className="flex flex-col gap-3">
                             {goalOptions.map(({ value, icon: Icon, description, colors }) => (
                                 <label
                                     key={value}
-                                    className={`group flex cursor-pointer items-center gap-4 rounded-xl border border-input-border bg-input p-3 transition-colors duration-150 has-focus-visible:outline-2 has-focus-visible:outline-offset-2 motion-reduce:transition-none ${colors.card}`}
+                                    className={`group relative flex cursor-pointer items-center gap-4 rounded-xl border border-input-border bg-input p-3 transition-colors duration-150 has-focus-visible:outline-2 has-focus-visible:outline-offset-2 motion-reduce:transition-none ${colors.card}`}
                                 >
                                     <input type="radio" value={value} className="sr-only" {...register("goal")} />
 
@@ -212,7 +235,7 @@ export default function SignUpPage() {
                         {errors.goal && <p className="mt-2 text-sm text-danger">{errors.goal.message}</p>}
                     </fieldset>
 
-                    <Button type="submit" isLoading={isSubmitting} className="w-full">
+                    <Button type="submit" variant="gradient" isLoading={isSubmitting} className="w-full">
                         Create account
                     </Button>
                 </form>

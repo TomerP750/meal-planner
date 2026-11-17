@@ -1,7 +1,7 @@
 import type { ComponentPropsWithRef } from "react";
 import { Loader2Icon } from "lucide-react";
 
-type ButtonVariant = "primary" | "secondary" | "danger";
+type ButtonVariant = "primary" | "gradient" | "secondary" | "danger";
 type ButtonSize = "sm" | "md";
 
 type ButtonProps = ComponentPropsWithRef<"button"> & {
@@ -14,6 +14,12 @@ type ButtonProps = ComponentPropsWithRef<"button"> & {
 const variantClassName: Record<ButtonVariant, string> = {
     primary:
         "border-transparent bg-linear-to-r from-primary to-primary-strong text-primary-foreground shadow-card hover:brightness-110",
+    /*
+     * Visible primary gradient for featured actions. The label sits over `via-primary`, so text contrast matches
+     * the primary variant; the Tailwind emerald/teal ends add the color shift (no theme tokens exist for them).
+     */
+    gradient:
+        "border-transparent bg-linear-to-r from-emerald-600 via-primary to-teal-800 text-primary-foreground shadow-card hover:brightness-110 dark:from-emerald-300 dark:to-teal-400",
     secondary: "border-divider bg-surface text-foreground hover:bg-accent hover:text-primary-strong",
     danger: "border-transparent bg-danger text-danger-foreground hover:brightness-110",
 };

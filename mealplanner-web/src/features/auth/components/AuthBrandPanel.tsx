@@ -27,7 +27,7 @@ type AuthBrandPanelProps = {
 /** Primary gradient panel with the logo, page heading and product highlights (highlights on large screens only). */
 export function AuthBrandPanel({ titleId, title, description, children }: AuthBrandPanelProps) {
     return (
-        <header className="relative isolate flex flex-col items-center gap-6 overflow-hidden rounded-2xl bg-linear-to-br from-primary to-primary-strong p-6 text-center text-primary-foreground shadow-card sm:p-10 lg:items-start lg:justify-center lg:p-12 lg:text-left">
+        <header className="relative isolate flex flex-col items-center gap-6 overflow-clip rounded-2xl bg-linear-to-br from-primary to-primary-strong p-6 text-center text-primary-foreground shadow-card sm:p-10 lg:items-start lg:justify-center lg:p-12 lg:text-left">
             <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10">
                 <div className="absolute -top-24 -right-24 size-72 rounded-full bg-primary-foreground/10" />
                 <div className="absolute -bottom-32 -left-24 size-80 rounded-full bg-primary-foreground/5" />

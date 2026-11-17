@@ -1,8 +1,9 @@
 import { Outlet } from "react-router-dom";
 
 export function AuthLayout() {
+    // overflow-clip (not hidden): clips the decorations without creating a scroll container the browser can shift on focus.
     return (
-        <div className="relative isolate min-h-dvh overflow-hidden bg-background text-foreground [--color-input:transparent]">
+        <div className="relative isolate min-h-dvh overflow-clip bg-background text-foreground [--color-input:transparent]">
             {/* Decorative background: a faded dot grid and crisp leaf shapes in the primary color. */}
             <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10">
                 <div className="absolute inset-0 bg-[radial-gradient(var(--color-primary)_1px,transparent_1px)] bg-size-[22px_22px] opacity-20 mask-[radial-gradient(ellipse_at_center,black_20%,transparent_70%)]" />
