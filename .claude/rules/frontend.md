@@ -5,6 +5,18 @@ paths:
 
 # Frontend rules
 
+## Folder structure
+
+- Follow the existing feature-based structure under `mealplanner-web/src/`. Create folders only when needed; avoid speculative scaffolding or unnecessary nesting.
+- Use `app/` for application setup: `app/router/` for application routing, `app/store/` for application-wide store setup, and `app/providers/` for composing providers when needed.
+- Keep domain-specific code in `features/<feature>/`. Follow the existing `features/auth/` pattern with `api/`, `components/`, `context/`, `hooks/`, and `pages/` as needed. Keep feature-specific types, utilities, and constants within their feature.
+- Keep a feature's context and provider implementation together in its `context/` folder, such as `features/auth/context/AuthContext.ts` and `AuthProvider.tsx`. Keep its consumer hook in the feature's `hooks/` folder. Compose application-level providers in `app/providers/` without moving feature-owned implementations there.
+- Use top-level `pages/` for general application pages such as `HomePage` and `NotFoundPage`. Keep feature-specific pages, such as login and registration, in `features/auth/pages/`.
+- Use `layouts/` for shared page wrappers and `layouts/components/` for layout components such as the navbar, sidebar, footer, and mobile menu. Add a separate auth layout only when auth pages need a shared presentation.
+- Use `shared/` for code reused across features: `ui/`, `hooks/`, `utils/`, `types/`, `config/`, and `constants/`. Shared code must not import feature-specific or application-composition code. Keep shared API infrastructure here when needed and feature-specific requests in the feature's `api/` folder.
+- Use `src/assets/` for imported assets and `public/` for assets served directly by URL. Keep global theme and base styles in the existing `src/index.css`.
+- Colocate component-specific styles and tests with their implementation when needed. Follow existing naming conventions and keep related files together.
+
 ## Theme and styling
 
 - Prefer the theme colors defined in `mealplanner-web/src/index.css`. If a needed theme color is missing, use the closest matching color and shade from Tailwind's built-in palette. Avoid hardcoded color values and use the selected fallback consistently.
