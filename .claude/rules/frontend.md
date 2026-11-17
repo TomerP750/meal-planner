@@ -43,6 +43,7 @@ paths:
 - Prefer semantic HTML and native controls. Ensure keyboard navigation, visible focus indicators, accessible names, and associated form labels.
 - Support reduced-motion preferences for animations and avoid communicating meaning through color alone.
 - Handle loading, empty, error, success, and disabled states where applicable. Give actionable feedback and prevent accidental duplicate submissions.
+- Whenever creating a component, implement a skeleton for its loading state using Tailwind's `animate-pulse` and `motion-reduce:animate-none`. Match the component's expected layout and dimensions to minimize layout shifts, use theme colors, and reuse shared skeleton primitives where available. Show the skeleton while content is loading; mark decorative placeholders as `aria-hidden` and expose the loading state through an accessible status or `aria-busy` on the content container.
 - Validate form input and display clear field-level errors. Preserve user input when a request fails.
 - Keep business logic separate from presentation when practical. Reuse shared types and domain rules instead of duplicating them in components.
 - Verify affected interactions, responsive behavior, and light/dark styling with the available non-build checks. Follow the repository-wide restrictions in `CLAUDE.md`.

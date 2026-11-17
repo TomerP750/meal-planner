@@ -101,4 +101,33 @@
     body {
         @apply min-w-80 bg-background text-foreground;
     }
+
+    /* Scrollbars: primary thumb on a transparent track. Inherited, so inner scroll areas match. */
+    :root {
+        scrollbar-width: thin;
+        scrollbar-color: var(--color-primary) transparent;
+    }
+
+    /* Fallback for browsers without scrollbar-color (Safari). */
+    @supports not (scrollbar-color: auto) {
+        ::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            border: 2px solid transparent;
+            border-radius: 9999px;
+            background-color: var(--color-primary);
+            background-clip: padding-box;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background-color: var(--color-primary-strong);
+        }
+    }
 }
